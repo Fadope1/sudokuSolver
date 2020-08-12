@@ -1,6 +1,7 @@
 # change lists to arrays for performance                                     --> Missing
 from sudokuField import field as baseField
 import numpy as np
+import colored
 import math
 import time
 import os
@@ -85,10 +86,13 @@ def last_number(index):
 def change_number(n):
     global index
     breaking = False
+    color_temp = "green"
+
     for x in range(n+1, 10):
         output = "Increase the number by 1"
         if isPossible(index, x):
             # x is working
+            color_temp = "green"
             output = "Changing index {}: {} -> {}".format(index, field[index], x)
             field[index] = x                                               # --> colored output
             index += 1
@@ -96,6 +100,7 @@ def change_number(n):
             breaking = True
         elif x == 9:
             # no hits for x: backtracking
+            color_temp = "red"
             output = "Backtracking at:", index
             field[index] = 0
             index = last_number(index)
@@ -106,8 +111,17 @@ def change_number(n):
 
         temp_field = np.resize(field, (9, 9))
         # print(output)
-        print(temp_field) # better looking output                            --> Missing
-        if update: time.sleep(.0005) # implement timedelta                   --> Missing
+        # print(temp_field) # better looking output                            --> Missing
+        for col_index, x in enumerate(temp_field):
+            for row_index, i in enumerate(x):
+                current_index = col_index*9+row_index
+                if current_index != index:
+                    color = "white"
+                else:
+                    color = color_temp
+                print(colored.stylize(i, colored.fg(color)), end=" ")
+            print()
+        if update: time.sleep(.0075) # timedelta?
         if update: os.system("cls")
         if breaking: break
 
@@ -120,8 +134,8 @@ while True:
     else:
         index += 1 # index=index+1 if BaseField[index]!=0 else index
 
-baseField=np.resize(baseField, (9,9))
-field=np.resize(field, (9,9))
+baseField = np.resize(baseField, (9,9))
+field = np.resize(field, (9,9))
 
 print("Base field:")
 print(baseField)
