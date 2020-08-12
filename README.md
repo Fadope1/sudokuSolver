@@ -1,3 +1,3 @@
 # sudokuSolver
 This is sudoku field Solver.
-Currently the performance and looks are not that great and will be updatet in the feauture.
+Currently the performance is not that great and will hopefully be updated in the feauture.
